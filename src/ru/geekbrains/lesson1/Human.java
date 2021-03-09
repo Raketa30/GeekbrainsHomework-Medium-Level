@@ -1,15 +1,12 @@
-package ru.geekbrains.lesson1.entity;
+package ru.geekbrains.lesson1;
 
-import ru.geekbrains.lesson1.behavior.CatJump;
-import ru.geekbrains.lesson1.behavior.CatRun;
-
-public class Cat extends RunJumpEntity {
+public class Human extends RunJumpEntity {
     private final String name;
 
-    public Cat(String name) {
+    public Human(String name) {
         this.name = name;
-        setRunBehavior(new CatRun());
-        setJumpBehavior(new CatJump());
+        setRunBehavior(new HumanRun());
+        setJumpBehavior(new HumanJump());
     }
 
     @Override
@@ -19,9 +16,10 @@ public class Cat extends RunJumpEntity {
 
     @Override
     public String toString() {
-        return "Cat{" +
+        return "Human{" +
                 "name='" + name + '\'' +
                 " power=" + getPower() +
                 '}';
     }
 }
+

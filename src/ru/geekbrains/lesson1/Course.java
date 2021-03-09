@@ -1,7 +1,5 @@
 package ru.geekbrains.lesson1;
 
-import ru.geekbrains.lesson1.entity.RunJumpEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

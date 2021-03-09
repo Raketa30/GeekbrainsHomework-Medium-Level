@@ -1,7 +1,4 @@
-package ru.geekbrains.lesson1.entity;
-
-import ru.geekbrains.lesson1.behavior.JumpBehavior;
-import ru.geekbrains.lesson1.behavior.RunBehavior;
+package ru.geekbrains.lesson1;
 
 public abstract class RunJumpEntity {
     private RunBehavior runBehavior;

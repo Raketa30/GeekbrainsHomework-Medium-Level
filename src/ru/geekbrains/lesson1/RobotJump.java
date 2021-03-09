@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson1.behavior;
+package ru.geekbrains.lesson1;
 
 public class RobotJump implements JumpBehavior {
     @Override

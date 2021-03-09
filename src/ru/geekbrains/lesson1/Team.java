@@ -1,10 +1,5 @@
 package ru.geekbrains.lesson1;
 
-import ru.geekbrains.lesson1.entity.Cat;
-import ru.geekbrains.lesson1.entity.RunJumpEntity;
-import ru.geekbrains.lesson1.entity.Human;
-import ru.geekbrains.lesson1.entity.Robot;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

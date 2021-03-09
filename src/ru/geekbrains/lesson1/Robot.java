@@ -1,7 +1,4 @@
-package ru.geekbrains.lesson1.entity;
-
-import ru.geekbrains.lesson1.behavior.RobotJump;
-import ru.geekbrains.lesson1.behavior.RobotRun;
+package ru.geekbrains.lesson1;
 
 public class Robot extends RunJumpEntity {
     private final int id;
