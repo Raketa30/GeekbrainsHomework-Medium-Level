@@ -3,7 +3,7 @@ package ru.geekbrains.lesson1.entity;
 import ru.geekbrains.lesson1.behavior.HumanJump;
 import ru.geekbrains.lesson1.behavior.HumanRun;
 
-public class Human extends Entity {
+public class Human extends RunJumpEntity {
     private final String name;
 
     public Human(String name) {

@@ -3,13 +3,13 @@ package ru.geekbrains.lesson1.entity;
 import ru.geekbrains.lesson1.behavior.JumpBehavior;
 import ru.geekbrains.lesson1.behavior.RunBehavior;
 
-public abstract class Entity {
+public abstract class RunJumpEntity {
     private RunBehavior runBehavior;
     private JumpBehavior jumpBehavior;
     private boolean isTired;
     private int power;
 
-    public Entity() {
+    public RunJumpEntity() {
         this.power = 100;
     }
 

@@ -1,7 +1,7 @@
 package ru.geekbrains.lesson1;
 
 import ru.geekbrains.lesson1.entity.Cat;
-import ru.geekbrains.lesson1.entity.Entity;
+import ru.geekbrains.lesson1.entity.RunJumpEntity;
 import ru.geekbrains.lesson1.entity.Human;
 import ru.geekbrains.lesson1.entity.Robot;
 
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Team {
-    private final List<Entity> team;
-    private final List<Entity> winners;
+    private final List<RunJumpEntity> team;
+    private final List<RunJumpEntity> winners;
 
     public Team(int size) {
         team = new ArrayList<>();
@@ -35,11 +35,11 @@ public class Team {
         }
     }
 
-    public List<Entity> getTeam() {
+    public List<RunJumpEntity> getTeam() {
         return team;
     }
 
-    public List<Entity> getWinners() {
+    public List<RunJumpEntity> getWinners() {
         return winners;
     }
 

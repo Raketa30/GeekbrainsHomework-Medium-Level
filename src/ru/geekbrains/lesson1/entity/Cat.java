@@ -3,7 +3,7 @@ package ru.geekbrains.lesson1.entity;
 import ru.geekbrains.lesson1.behavior.CatJump;
 import ru.geekbrains.lesson1.behavior.CatRun;
 
-public class Cat extends Entity {
+public class Cat extends RunJumpEntity {
     private final String name;
 
     public Cat(String name) {

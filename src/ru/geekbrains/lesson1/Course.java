@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson1;
 
-import ru.geekbrains.lesson1.entity.Entity;
+import ru.geekbrains.lesson1.entity.RunJumpEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +29,14 @@ public class Course {
     }
 
     public void dolt(Team team) throws InterruptedException {
-        for (Entity entity : team.getTeam()) {
-            entity.display();
+        for (RunJumpEntity runJumpEntity : team.getTeam()) {
+            runJumpEntity.display();
             for (Object barrier : barriers) {
                 if (barrier instanceof Wall) {
                     System.out.print("In forward ");
                     ((Wall) barrier).getWallInfo();
 
-                    if (!entity.performJump(((Wall) barrier).getHeight())) {
+                    if (!runJumpEntity.performJump(((Wall) barrier).getHeight())) {
                         break;
                     }
                     Thread.sleep(100);
@@ -44,15 +44,15 @@ public class Course {
                 } else if (barrier instanceof Track) {
                     ((Track) barrier).getTrackInfo();
 
-                    if (!entity.performRun(((Track) barrier).getLength())) {
+                    if (!runJumpEntity.performRun(((Track) barrier).getLength())) {
                         break;
                     }
                 }
             }
 
-            entity.display();
-            if (!entity.isTired()) {
-                team.getWinners().add(entity);
+            runJumpEntity.display();
+            if (!runJumpEntity.isTired()) {
+                team.getWinners().add(runJumpEntity);
                 System.out.println("FINISH!!");
             }
             System.out.println();
