@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Course {
-    private final List<Barrier> barriers;
+    private final List<Object> barriers;
 
     public Course(int size) {
         barriers = new ArrayList<>();
@@ -31,8 +31,7 @@ public class Course {
     public void dolt(Team team) throws InterruptedException {
         for (Entity entity : team.getTeam()) {
             entity.display();
-            for (Barrier barrier : barriers) {
-
+            for (Object barrier : barriers) {
                 if (barrier instanceof Wall) {
                     System.out.print("In forward ");
                     ((Wall) barrier).getWallInfo();
@@ -60,11 +59,7 @@ public class Course {
         }
     }
 
-    private static class Barrier {
-
-    }
-
-    private static class Track extends Barrier {
+    static class Track {
         private final int length;
 
         public Track() {
@@ -87,7 +82,7 @@ public class Course {
         }
     }
 
-    private static class Wall extends Barrier {
+     static class Wall{
         private final double height;
 
         public Wall() {

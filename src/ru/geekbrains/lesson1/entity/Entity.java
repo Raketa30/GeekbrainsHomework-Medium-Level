@@ -27,6 +27,7 @@ public abstract class Entity {
             System.out.println("run " + length + " meters!!");
             power -= action;
             return true;
+
         } else {
             isTired = true;
             System.out.println("Tired, cannot run!");
@@ -40,6 +41,7 @@ public abstract class Entity {
             System.out.println("What a jump! Jumped " + height + " meters wall");
             power -= action;
             return true;
+
         } else {
             System.out.println("Tired, cannot jump!");
             isTired = true;

@@ -21,12 +21,16 @@ public class Team {
 
         for (int i = 0; i < size; i++) {
             int r = random.nextInt(3);
+
             if (r == 0) {
                 team.add(new Human("Human" + i));
+
             } else if (r == 1) {
                 team.add(new Robot(size + i));
+
             } else if (r == 2) {
                 team.add(new Cat("Cat" + i));
+
             }
         }
     }
@@ -39,12 +43,4 @@ public class Team {
         return winners;
     }
 
-    @Override
-    public String toString() {
-        return "Team{" +
-                "team=" + team +
-                "\n" +
-                ", winners=" + winners +
-                '}';
-    }
 }
