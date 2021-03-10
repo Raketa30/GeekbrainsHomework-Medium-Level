@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
-    private final List<Overcomable> barriers;
+    private final List<Overcome> barriers;
 
     public Course(int size) {
         barriers = new ArrayList<>();
@@ -29,17 +29,11 @@ public class Course {
         for (ActionUnit actionUnit : team.getTeam()) {
             actionUnit.display();
 
-            for (Overcomable barrier : barriers) {
+            for (Overcome barrier : barriers) {
                 if (!actionUnit.isTired()) {
                     System.out.print("In forward ");
                     barrier.getInfo();
-                    if (barrier instanceof Wall) {
-                        actionUnit.performJump(barrier.doAction());
-                    }
-
-                    if (barrier instanceof Track) {
-                        actionUnit.performRun(barrier.doAction());
-                    }
+                    barrier.doAction(actionUnit);
                 }
 
                 Thread.sleep(100);

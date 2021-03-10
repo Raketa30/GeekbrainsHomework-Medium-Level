@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson1;
 
-public class Track implements Overcomable{
+public class Track implements Overcome {
     private final double length;
 
     public Track() {
@@ -15,8 +15,8 @@ public class Track implements Overcomable{
     }
 
     @Override
-    public double doAction() {
-        return length;
+    public void doAction(ActionUnit unit) {
+        unit.performRun(length);
     }
 
     @Override

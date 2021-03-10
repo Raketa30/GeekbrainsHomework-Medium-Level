@@ -2,7 +2,7 @@ package ru.geekbrains.lesson1;
 
 import java.util.Random;
 
-public class Wall implements Overcomable{
+public class Wall implements Overcome {
 
     private final double height;
 
@@ -25,8 +25,8 @@ public class Wall implements Overcomable{
     }
 
     @Override
-    public double doAction() {
-        return height;
+    public void doAction(ActionUnit unit) {
+        unit.performJump(height);
     }
 
     @Override
