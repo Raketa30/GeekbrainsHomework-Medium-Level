@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson1;
 
-public class Robot extends RunJumpEntity {
+public class Robot extends ActionUnit {
     private final int id;
 
     public Robot(int id) {

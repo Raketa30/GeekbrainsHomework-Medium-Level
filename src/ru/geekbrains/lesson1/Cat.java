@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson1;
 
-public class Cat extends RunJumpEntity {
+public class Cat extends ActionUnit {
     private final String name;
 
     public Cat(String name) {

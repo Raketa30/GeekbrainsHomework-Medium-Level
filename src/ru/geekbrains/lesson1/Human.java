@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson1;
 
-public class Human extends RunJumpEntity {
+public class Human extends ActionUnit {
     private final String name;
 
     public Human(String name) {

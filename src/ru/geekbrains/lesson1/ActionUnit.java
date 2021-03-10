@@ -1,12 +1,12 @@
 package ru.geekbrains.lesson1;
 
-public abstract class RunJumpEntity {
+public abstract class ActionUnit {
     private RunBehavior runBehavior;
     private JumpBehavior jumpBehavior;
-    private boolean isTired;
+    private boolean isTired = false;
     private int power;
 
-    public RunJumpEntity() {
+    public ActionUnit() {
         this.power = 100;
     }
 
@@ -18,31 +18,27 @@ public abstract class RunJumpEntity {
         this.jumpBehavior = jumpBehavior;
     }
 
-    public boolean performRun(int length) {
+    public void performRun(double length) {
         int action = runBehavior.run(length);
         if (power >= action) {
             System.out.println("run " + length + " meters!!");
             power -= action;
-            return true;
 
         } else {
             isTired = true;
             System.out.println("Tired, cannot run!");
-            return false;
         }
     }
 
-    public boolean performJump(double height) {
+    public void performJump(double height) {
         int action = jumpBehavior.jump(height);
         if (power >= action) {
             System.out.println("What a jump! Jumped " + height + " meters wall");
             power -= action;
-            return true;
 
         } else {
             System.out.println("Tired, cannot jump!");
             isTired = true;
-            return false;
         }
     }
 

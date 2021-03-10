@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Team {
-    private final List<RunJumpEntity> team;
-    private final List<RunJumpEntity> winners;
+    private final List<ActionUnit> team;
+    private final List<ActionUnit> winners;
 
     public Team(int size) {
         team = new ArrayList<>();
@@ -30,11 +30,11 @@ public class Team {
         }
     }
 
-    public List<RunJumpEntity> getTeam() {
+    public List<ActionUnit> getTeam() {
         return team;
     }
 
-    public List<RunJumpEntity> getWinners() {
+    public List<ActionUnit> getWinners() {
         return winners;
     }
 
