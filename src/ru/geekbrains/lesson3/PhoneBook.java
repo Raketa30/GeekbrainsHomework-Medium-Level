@@ -24,11 +24,11 @@ public class PhoneBook {
     }
 
     public boolean add(String number, String name) {
-        if(phoneBookMap.containsKey(number)) {
+        if (phoneBookMap.containsKey(number)) {
             System.out.println("Phone book contains this number -> " + number);
             return false;
         }
-        if(regexPhoneNumber(number)) {
+        if (regexPhoneNumber(number)) {
             phoneBookMap.put(number, name);
             System.out.println(number + " " + name + ", added to phone book");
             return true;
@@ -38,9 +38,9 @@ public class PhoneBook {
     }
 
     public boolean get(String name) {
-        if(phoneBookMap.containsValue(name)) {
-            for(Map.Entry<String, String> entry : phoneBookMap.entrySet()) {
-                if(entry.getValue().equals(name)) {
+        if (phoneBookMap.containsValue(name)) {
+            for (Map.Entry<String, String> entry : phoneBookMap.entrySet()) {
+                if (entry.getValue().equals(name)) {
                     System.out.println(entry.getKey() + " " + entry.getValue());
                 }
             }
