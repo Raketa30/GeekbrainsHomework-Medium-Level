@@ -28,13 +28,15 @@ public class PhoneBook {
             System.out.println("Phone book contains this number -> " + number);
             return false;
         }
-        if (regexPhoneNumber(number)) {
-            phoneBookMap.put(number, name);
-            System.out.println(number + " " + name + ", added to phone book");
-            return true;
+        if (!regexPhoneNumber(number)) {
+            System.out.println("Wrong number format, please use - > +X-XXX-XXX-XX-XX");
+            return false;
         }
-        System.out.println("Wrong number format, please use - > +X-XXX-XXX-XX-XX");
-        return false;
+
+        phoneBookMap.put(number, name);
+        System.out.println(number + " " + name + ", added to phone book");
+        return true;
+
     }
 
     public boolean get(String name) {

@@ -28,6 +28,7 @@ public class Main {
         book.add("+8-800-322-35-35", "Uriy");
         book.add("+2-800-222-35-35", "Jeka");
         book.add("+2-800-222-35-35", "Vadim");
+        book.add("+2-800-222-35-3", "Vadim А");
         book.add("+2-800-555-35-35", "Vitaliy");
         System.out.println();
 
