@@ -21,20 +21,8 @@ public class Main {
         showUniqWordsSorted(wordsArray);
         System.out.println();
 
-        PhoneBook book = new PhoneBook();
+        doTask2();
 
-        book.add("+8-800-555-35-35", "Igor");
-        book.add("+8-800-322-35-35", "Jeka");
-        book.add("+8-800-322-35-35", "Uriy");
-        book.add("+2-800-222-35-35", "Jeka");
-        book.add("+2-800-222-35-35", "Vadim");
-        book.add("+2-800-222-35-3", "Vadim А");
-        book.add("+2-800-555-35-35", "Vitaliy");
-        System.out.println();
-
-        book.get("Jeka");
-        System.out.println();
-        book.get("Vadim");
     }
 
     public static void showUniqWords(String[] words) {
@@ -69,5 +57,19 @@ public class Main {
         }
     }
 
+    public static void doTask2() {
+        PhoneBook book = new PhoneBook();
 
+        book.add("+8-800-555-35-35", "Igor");
+        book.add("+8-800-322-35-35", "Jeka");
+        book.add("+8-800-322-35-35", "Uriy");
+        book.add("+2-800-222-35-35", "Jeka");
+        book.add("+2-800-222-35-35", "Vadim");
+        book.add("+2-800-222-35-3", "Vadim А");
+        book.add("+2-800-555-35-35", "Vitaliy");
+        System.out.println();
+
+        System.out.println(book.get("Jeka"));
+        System.out.println(book.get("Vadim"));
+    }
 }

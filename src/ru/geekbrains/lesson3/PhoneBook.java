@@ -39,18 +39,18 @@ public class PhoneBook {
 
     }
 
-    public boolean get(String name) {
+    public Map<String, String> get(String name) {
+        Map<String, String> phonesByName = new HashMap<>();
+
         if (phoneBookMap.containsValue(name)) {
             for (Map.Entry<String, String> entry : phoneBookMap.entrySet()) {
                 if (entry.getValue().equals(name)) {
-                    System.out.println(entry.getKey() + " " + entry.getValue());
+                    phonesByName.put(entry.getKey(), entry.getValue());
                 }
             }
-            return true;
         }
-
-        System.out.println("Nothing for this request");
-        return false;
+        
+        return phonesByName;
     }
 
     private boolean regexPhoneNumber(String number) {
