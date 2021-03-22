@@ -27,7 +27,7 @@ public class Main {
         System.out.println(doubleUp(4, integerSupplier));
 
         //4
-        String x = "76cxcnsbvnsmcnddcc";
+        String x = "kbjjkcjhjccvgcjcccj";
 
         Optional<String> opt = findAllChars(x, 'c');
 
@@ -76,6 +76,10 @@ public class Main {
      */
 
     public static Optional<String> findAllChars(String target, char toFind) {
+        if(target == null) {
+            return Optional.empty();
+        }
+
         return Optional.of(
                 target.chars()
                 .filter(ch -> ch == toFind)
