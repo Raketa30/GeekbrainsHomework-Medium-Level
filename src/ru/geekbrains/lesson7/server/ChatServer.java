@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class ChatServer {
     private final AuthService authService = new AuthService();
-    private final Set<ClientHandler> clientHandlers = new HashSet<>();
+    private final Set<ClientHandler> loggedOn = new HashSet<>();
 
     public ChatServer() {
         try {
@@ -22,10 +22,7 @@ public class ChatServer {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 ClientHandler handler = new ClientHandler(clientSocket, this);
-
                 new Thread(handler).start();
-                clientHandlers.add(handler);
-                System.out.println("Client connected");
             }
 
         } catch (IOException e) {
@@ -38,7 +35,7 @@ public class ChatServer {
     }
 
     public void broadcast(ClientHandler current, String message) {
-        for (ClientHandler clientHandler : clientHandlers) {
+        for (ClientHandler clientHandler : loggedOn) {
             if (!clientHandler.equals(current)) {
                 clientHandler.sendMessage(message);
             }
@@ -46,7 +43,7 @@ public class ChatServer {
     }
 
     public void broadcast(String message) {
-        for (ClientHandler clientHandler : clientHandlers) {
+        for (ClientHandler clientHandler : loggedOn) {
             clientHandler.sendMessage(message);
         }
     }
@@ -54,11 +51,27 @@ public class ChatServer {
     public void serverMessageSender() {
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
-
             while (true) {
                 String message = scanner.nextLine();
-                broadcast(String.format("Server:>%s", message));
+                broadcast(message);
             }
         }).start();
+    }
+
+    public AuthService getAuthService() {
+        return authService;
+    }
+
+    public void subscribe(ClientHandler handler) {
+        loggedOn.add(handler);
+    }
+
+    public void unscribe(ClientHandler handler) {
+        loggedOn.remove(handler);
+    }
+
+    public boolean isLoggedIn(ClientHandler handler) {
+        return loggedOn.stream()
+                .anyMatch(client -> client.getUser().equals(handler.getUser()));
     }
 }

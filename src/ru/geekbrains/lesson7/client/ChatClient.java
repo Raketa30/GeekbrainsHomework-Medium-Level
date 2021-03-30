@@ -37,7 +37,7 @@ public class ChatClient {
                     if (message.equalsIgnoreCase("quit")) {
                         break;
                     }
-                    out.writeUTF(String.format("%s:> %s", name, message));
+                    out.writeUTF(message);
                 }
             }
 
