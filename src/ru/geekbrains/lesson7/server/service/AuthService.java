@@ -21,11 +21,6 @@ public class AuthService {
 
     }
 
-    private boolean checkUser(String message) {
-        String[] findUser = message.split("\\s+");
-        return checkLoggedUserByNickname(findUser[1]);
-    }
-
     public synchronized void subscribe(ClientHandler handler) {
         loggedUser.add(handler);
     }
@@ -63,7 +58,7 @@ public class AuthService {
                     clientHandler.setUser(currentUser.get());
 
                     subscribe(clientHandler);
-                        
+
                     transmitter.sendStatusMessage(clientHandler, "Connected to main chat");
                     return true;
 
