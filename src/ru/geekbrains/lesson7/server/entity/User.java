@@ -34,10 +34,6 @@ public class User {
         this.password = password;
     }
 
-    public void helloMessage() {
-        System.out.printf("user %s connected", nickname);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -7,106 +7,111 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Optional;
+
+/**
+ * 1. Разобраться с кодом
+ * 2. * Реализовать личные сообщения, если клиент пишет «/w nick3 Привет»,
+ * то только клиенту с ником nick3 должно прийти сообщение «Привет»
+ */
 
 public class ClientHandler implements Runnable {
-    private final ChatServer chatServer;
     private DataOutputStream out;
     private DataInputStream in;
     private User user;
-    private Socket socket;
+    private MessageTransmitter messageTransmitter;
 
-    public ClientHandler(Socket socket, ChatServer chatServer) {
-        this.chatServer = chatServer;
-        this.socket = socket;
+    public ClientHandler(Socket socket, MessageTransmitter messageTransmitter) {
+        this.messageTransmitter = messageTransmitter;
 
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+            authentication();
+        } catch (IOException e) {
+            throw new ChatServerException("Something went wrong with ClientHandler");
+        }
     }
 
     @Override
     public void run() {
-        try {
-            authentication();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         while (true) {
             try {
                 String message = in.readUTF();
-                if (message.equals("-quit")) {
-                    chatServer.unscribe(this);
+                if (message.startsWith("/w ")) {
+                    if (checkUser(message)) {
+                        String nickname = takeUserNicknameFromMessage(message);
+                        String formedMessage = formPersonalMessage(message);
+
+                        messageTransmitter.unicast(this, nickname, formedMessage);
+
+                    } else {
+                        messageTransmitter.sendStatusMessage(this, "Current user not logged on");
+                    }
+
+                } else if (message.equals("-quit")) {
+                    messageTransmitter.getAuthService().unscribe(this);
                     break;
+
+                } else {
+                    System.out.println(message);
+                    messageTransmitter.broadcast(this, message);
                 }
-                System.out.println(message);
-                chatServer.broadcast(this, message);
+
 
             } catch (IOException e) {
+                messageTransmitter.getAuthService().unscribe(this);
                 throw new ChatServerException("Something went wrong during receiving the message.", e);
             }
         }
     }
 
-    public void sendMessage(String message) {
-        try {
-            out.writeUTF(String.format("%s:> %s", user.getNickname(), message));
-        } catch (IOException e) {
-            throw new ChatServerException("Something went wrong during sending the message.", e);
-        }
+    public MessageTransmitter getMessageTransmitter() {
+        return messageTransmitter;
     }
 
-    public void sendMessage(String username, String message) {
-        try {
-            out.writeUTF(String.format("%s:> %s", username, message));
-        } catch (IOException e) {
-            throw new ChatServerException("Something went wrong during sending the message.", e);
-        }
-    }
-
-    public void authentication() throws IOException {
-        while (true) {
-            String authMessage = in.readUTF();
-
-            if (checkCredentials(authMessage)) {
-                String[] loginPassword = authMessage.split("\\s+");
-
-                Optional<User> currentUser = chatServer.getAuthService()
-                        .findByLoginAndPassword(loginPassword[1], loginPassword[2]);
-
-                if (currentUser.isPresent()) {
-                    this.user = currentUser.get();
-
-                    if (!chatServer.isLoggedIn(this)) {
-                        System.out.printf("User %s, logged in\n", currentUser.get().getNickname());
-
-                        chatServer.broadcast(String.format("User %s, logged in\n", currentUser.get().getNickname()));
-                        chatServer.subscribe(this);
-
-                        sendMessage("Connected to main chat");
-                        return;
-                    }
-                } else {
-                    sendMessage("Wrong login or password");
-                }
-            } else {
-                sendMessage("Incorrect authentication request");
-            }
-        }
-    }
-
-    private boolean checkCredentials(String credentials) {
-        String reg = "-auth\\s+([a-zA-Z0-9]{2,10})\\s+([a-zA-Z0-9]{2,10})";
-        return credentials.matches(reg);
+    public DataOutputStream getOut() {
+        return out;
     }
 
     public User getUser() {
-        return this.user;
+        return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private void authentication() throws IOException {
+        boolean isLoggedIn = false;
+
+        while (!isLoggedIn) {
+            String authMessage = in.readUTF();
+            isLoggedIn = messageTransmitter.getAuthService()
+                    .authentication(this, authMessage);
+        }
+    }
+
+    private boolean checkUser(String message) {
+        String[] arr = message.split("\\s+");
+        return messageTransmitter.getAuthService().checkLoggedUserByNickname(arr[1]);
+    }
+
+    private String takeUserNicknameFromMessage(String message) {
+        String[] mess = message.split("\\s+");
+        return mess[1];
+    }
+
+    private String formPersonalMessage(String message) {
+        String[] mess = message.split("\\s+");
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 2; i < mess.length; i++) {
+            builder.append(mess[i]).append(" ");
+        }
+        return builder.toString();
+
+    }
+
+
 }

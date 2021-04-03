@@ -13,7 +13,7 @@ public class ChatClient {
         try {
             InetAddress address = InetAddress.getLocalHost();
             Socket socket = new Socket(address, 8000);
-            System.out.println("Connected to chat..");
+            System.out.println("Connected to chat server..");
             System.out.println("Please enter auth message: -auth login password");
 
             try (DataOutputStream out = new DataOutputStream(socket.getOutputStream());
