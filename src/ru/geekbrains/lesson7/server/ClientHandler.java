@@ -15,10 +15,11 @@ import java.net.Socket;
  */
 
 public class ClientHandler implements Runnable {
-    private DataOutputStream out;
-    private DataInputStream in;
+    private final MessageTransmitter messageTransmitter;
+    private final DataOutputStream out;
+    private final DataInputStream in;
     private User user;
-    private MessageTransmitter messageTransmitter;
+
 
     public ClientHandler(Socket socket, MessageTransmitter messageTransmitter) {
         this.messageTransmitter = messageTransmitter;
@@ -35,35 +36,8 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            try {
-                String message = in.readUTF();
-                if (message.startsWith("/w ")) {
-                    if (checkUser(message)) {
-                        String nickname = takeUserNicknameFromMessage(message);
-                        String formedMessage = formPersonalMessage(message);
-
-                        messageTransmitter.unicast(this, nickname, formedMessage);
-
-                    } else {
-                        messageTransmitter.sendStatusMessage(this, "Current user not logged on");
-                    }
-
-                } else if (message.equals("-quit")) {
-                    messageTransmitter.getAuthService().unscribe(this);
-                    break;
-
-                } else {
-                    System.out.println(message);
-                    messageTransmitter.broadcast(this, message);
-                }
-
-
-            } catch (IOException e) {
-                messageTransmitter.getAuthService().unscribe(this);
-                throw new ChatServerException("Something went wrong during receiving the message.", e);
-            }
-        }
+        Receiver receiver = new SocketReceiver(in, messageTransmitter, this);
+        receiver.receiveMessage();
     }
 
     public MessageTransmitter getMessageTransmitter() {
@@ -91,27 +65,4 @@ public class ClientHandler implements Runnable {
                     .authentication(this, authMessage);
         }
     }
-
-    private boolean checkUser(String message) {
-        String[] arr = message.split("\\s+");
-        return messageTransmitter.getAuthService().checkLoggedUserByNickname(arr[1]);
-    }
-
-    private String takeUserNicknameFromMessage(String message) {
-        String[] mess = message.split("\\s+");
-        return mess[1];
-    }
-
-    private String formPersonalMessage(String message) {
-        String[] mess = message.split("\\s+");
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 2; i < mess.length; i++) {
-            builder.append(mess[i]).append(" ");
-        }
-        return builder.toString();
-
-    }
-
-
 }
