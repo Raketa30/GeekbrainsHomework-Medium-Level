@@ -62,10 +62,8 @@ public class AuthService {
                     transmitter.broadcast(String.format("User %s, logged in", currentUser.get().getNickname()));
                     clientHandler.setUser(currentUser.get());
 
-                    synchronized (loggedUser) {
-                        subscribe(clientHandler);
-                    }
-
+                    subscribe(clientHandler);
+                        
                     transmitter.sendStatusMessage(clientHandler, "Connected to main chat");
                     return true;
 
