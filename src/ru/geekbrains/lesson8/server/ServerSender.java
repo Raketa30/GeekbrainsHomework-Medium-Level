@@ -1,6 +1,6 @@
-package ru.geekbrains.lesson7.server;
+package ru.geekbrains.lesson8.server;
 
-import ru.geekbrains.lesson7.server.exceptions.ChatServerException;
+import ru.geekbrains.lesson8.server.exceptions.ChatServerException;
 
 import java.io.IOException;
 

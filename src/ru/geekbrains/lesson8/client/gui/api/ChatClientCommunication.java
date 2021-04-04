@@ -1,25 +1,26 @@
-package ru.geekbrains.lesson7.client;
+package ru.geekbrains.lesson8.client.gui.api;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ChatClient {
+public class ChatClientCommunication {
+    private DataOutputStream out;
+    private DataInputStream in;
 
-    public ChatClient(String name) {
+    public ChatClientCommunication(String address, int port) {
         try {
-            InetAddress address = InetAddress.getLocalHost();
-            Socket socket = new Socket(address, 8000);
+            Socket socket = new Socket(address, port);
             System.out.println("Connected to chat server..");
             System.out.println("Please enter auth message: -auth login password");
 
-            try (DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                 DataInputStream in = new DataInputStream(socket.getInputStream());
-                 Scanner scanner = new Scanner(System.in)) {
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
+            Scanner scanner = new Scanner(System.in);
 
+            try {
                 new Thread(() -> {
                     try {
                         while (true) {
@@ -39,6 +40,8 @@ public class ChatClient {
                     }
                     out.writeUTF(message);
                 }
+            } catch (IOException e) {
+
             }
 
         } catch (IOException e) {

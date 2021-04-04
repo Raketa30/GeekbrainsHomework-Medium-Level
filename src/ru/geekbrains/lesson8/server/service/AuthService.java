@@ -1,8 +1,8 @@
-package ru.geekbrains.lesson7.server.service;
+package ru.geekbrains.lesson8.server.service;
 
-import ru.geekbrains.lesson7.server.ClientHandler;
-import ru.geekbrains.lesson7.server.MessageTransmitter;
-import ru.geekbrains.lesson7.server.entity.User;
+import ru.geekbrains.lesson8.server.ClientHandler;
+import ru.geekbrains.lesson8.server.MessageTransmitter;
+import ru.geekbrains.lesson8.server.entity.User;
 
 import java.util.HashSet;
 import java.util.Optional;
