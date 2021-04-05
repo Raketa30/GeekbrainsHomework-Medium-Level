@@ -4,8 +4,8 @@ import ru.geekbrains.lesson8.server.service.AuthService;
 
 public class MessageTransmitter {
     private final AuthService authService = new AuthService();
-    private Router router;
-    private Sender sender;
+    private final Router router;
+    private final Sender sender;
 
     public MessageTransmitter() {
         this.sender = new ServerSender();

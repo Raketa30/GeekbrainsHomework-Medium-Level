@@ -65,4 +65,5 @@ public class ClientHandler implements Runnable {
                     .authentication(this, authMessage);
         }
     }
+
 }

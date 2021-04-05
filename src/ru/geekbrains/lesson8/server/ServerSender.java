@@ -10,7 +10,7 @@ public class ServerSender implements Sender {
         if (clientHandler.getUser() != null) {
             try {
                 clientHandler.getOut()
-                        .writeUTF(String.format("%s:> %s", nickname, message));
+                        .writeUTF(String.format("[%s]:> %s", nickname, message));
 
             } catch (IOException e) {
                 throw new ChatServerException("Something went wrong during sending the message.", e);

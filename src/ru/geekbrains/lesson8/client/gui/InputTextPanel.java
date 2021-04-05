@@ -1,15 +1,24 @@
 package ru.geekbrains.lesson8.client.gui;
 
+import ru.geekbrains.lesson8.client.gui.api.Receiver;
+import ru.geekbrains.lesson8.client.gui.api.Sender;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class InputTextPanel extends JPanel {
+    private final JTextArea chatArea;
 
-    public InputTextPanel(JTextArea chatArea) {
+    public InputTextPanel(JTextArea chatArea, Sender sender) {
+        this.chatArea = chatArea;
         JTextField textField = new JTextField();
         JButton button = new JButton("Enter");
+        chatArea.setAutoscrolls(true);
+
+        chatArea.append("Connected to chat server..\n");
+        chatArea.append("Please enter auth message: -auth login password\n");
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(490, 40));
@@ -18,7 +27,9 @@ public class InputTextPanel extends JPanel {
 
         button.addActionListener(e -> {
             if (!textField.getText().equals("")) {
-                chatArea.append(textField.getText() + "\n");
+                String message = textField.getText();
+                chatArea.append("[YOU]: " + message + "\n");
+                sender.send(message);
                 textField.setText("");
             }
         });
@@ -27,7 +38,9 @@ public class InputTextPanel extends JPanel {
             @Override
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == '\n' && !textField.getText().equals("")) {
-                    chatArea.append(textField.getText() + "\n");
+                    String message = textField.getText();
+                    chatArea.append("[YOU]: " + message + "\n");
+                    sender.send(message);
                     textField.setText("");
                 }
             }
@@ -37,4 +50,12 @@ public class InputTextPanel extends JPanel {
         add(button, BorderLayout.EAST);
     }
 
+    public Receiver getReceiver() {
+        return (message) -> {
+            if (!message.isBlank()) {
+                chatArea.append(message);
+                chatArea.append("\n");
+            }
+        };
+    }
 }
