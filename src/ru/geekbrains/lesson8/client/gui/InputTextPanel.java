@@ -55,7 +55,11 @@ public class InputTextPanel extends JPanel {
             if (!message.isBlank()) {
                 if (message.equals("Auth timeout")) {
                     chatArea.append(message);
-                    Thread.sleep(1000);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
                     System.exit(1);
                 }
                 chatArea.append(message);

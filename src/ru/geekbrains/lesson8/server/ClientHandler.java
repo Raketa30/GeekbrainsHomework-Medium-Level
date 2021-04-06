@@ -75,13 +75,13 @@ public class ClientHandler implements Runnable {
             while (true) {
                 try {
                     long current = System.currentTimeMillis();
-                    if (current - start >= 120000 && user == null) {
+                    if (current - start >= 20000 && user == null) {
                         out.writeUTF("Auth timeout");
                         socket.close();
                         break;
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("ClientHandler Closed");
                 }
             }
         }).start();
