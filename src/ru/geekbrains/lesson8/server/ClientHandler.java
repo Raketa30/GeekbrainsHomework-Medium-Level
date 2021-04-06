@@ -19,8 +19,7 @@ public class ClientHandler implements Runnable {
     private final MessageTransmitter messageTransmitter;
     private final DataOutputStream out;
     private final DataInputStream in;
-    private volatile User user;
-
+    private User user;
 
     public ClientHandler(Socket socket, MessageTransmitter messageTransmitter) {
         this.socket = socket;
@@ -67,6 +66,7 @@ public class ClientHandler implements Runnable {
             isLoggedIn = messageTransmitter.getAuthService()
                     .authentication(this, authMessage);
         }
+        out.writeUTF("logged");
     }
 
     private void getAuthTimer() {

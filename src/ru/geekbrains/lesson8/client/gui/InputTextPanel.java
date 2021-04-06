@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 
 public class InputTextPanel extends JPanel {
     private final JTextArea chatArea;
+    private boolean logged = false;
 
     public InputTextPanel(JTextArea chatArea, Sender sender) {
         this.chatArea = chatArea;
@@ -28,7 +29,9 @@ public class InputTextPanel extends JPanel {
         button.addActionListener(e -> {
             if (!textField.getText().equals("")) {
                 String message = textField.getText();
-                chatArea.append("[YOU]: " + message + "\n");
+                if (logged) {
+                    chatArea.append("[YOU]: " + message + "\n");
+                }
                 sender.send(message);
                 textField.setText("");
             }
@@ -39,7 +42,9 @@ public class InputTextPanel extends JPanel {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == '\n' && !textField.getText().equals("")) {
                     String message = textField.getText();
-                    chatArea.append("[YOU]: " + message + "\n");
+                    if (logged) {
+                        chatArea.append("[YOU]: " + message + "\n");
+                    }
                     sender.send(message);
                     textField.setText("");
                 }
@@ -53,17 +58,17 @@ public class InputTextPanel extends JPanel {
     public Receiver getReceiver() {
         return (message) -> {
             if (!message.isBlank()) {
-                if (message.equals("Auth timeout")) {
+                if (message.equals("logged")) {
+                    logged = true;
+
+                } else if (message.equals("Auth timeout")) {
                     chatArea.append(message);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                    }
-                    System.exit(1);
+                    logged = false;
+
+                } else {
+                    chatArea.append(message);
+                    chatArea.append("\n");
                 }
-                chatArea.append(message);
-                chatArea.append("\n");
             }
         };
     }
