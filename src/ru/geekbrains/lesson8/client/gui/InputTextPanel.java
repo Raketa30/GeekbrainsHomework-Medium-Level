@@ -53,6 +53,11 @@ public class InputTextPanel extends JPanel {
     public Receiver getReceiver() {
         return (message) -> {
             if (!message.isBlank()) {
+                if (message.equals("Auth timeout")) {
+                    chatArea.append(message);
+                    Thread.sleep(1000);
+                    System.exit(1);
+                }
                 chatArea.append(message);
                 chatArea.append("\n");
             }

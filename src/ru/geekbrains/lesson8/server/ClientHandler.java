@@ -15,19 +15,21 @@ import java.net.Socket;
  */
 
 public class ClientHandler implements Runnable {
+    private Socket socket;
     private final MessageTransmitter messageTransmitter;
     private final DataOutputStream out;
     private final DataInputStream in;
-    private User user;
+    private volatile User user;
 
 
     public ClientHandler(Socket socket, MessageTransmitter messageTransmitter) {
+        this.socket = socket;
         this.messageTransmitter = messageTransmitter;
 
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-
+            getAuthTimer();
             authentication();
         } catch (IOException e) {
             throw new ChatServerException("Something went wrong with ClientHandler");
@@ -64,6 +66,25 @@ public class ClientHandler implements Runnable {
             isLoggedIn = messageTransmitter.getAuthService()
                     .authentication(this, authMessage);
         }
+    }
+
+    private void getAuthTimer() {
+        long start = System.currentTimeMillis();
+
+        new Thread(() -> {
+            while (true) {
+                try {
+                    long current = System.currentTimeMillis();
+                    if (current - start >= 120000 && user == null) {
+                        out.writeUTF("Auth timeout");
+                        socket.close();
+                        break;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 }
