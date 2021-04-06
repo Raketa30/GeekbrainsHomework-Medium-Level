@@ -31,8 +31,9 @@ public class ClientHandler implements Runnable {
             out = new DataOutputStream(socket.getOutputStream());
             getAuthTimer();
             authentication();
+
         } catch (IOException e) {
-            throw new ChatServerException("Something went wrong with ClientHandler");
+            throw new ChatServerException("ClientHandler closed");
         }
     }
 
@@ -75,13 +76,12 @@ public class ClientHandler implements Runnable {
             while (true) {
                 try {
                     long current = System.currentTimeMillis();
-                    if (current - start >= 20000 && user == null) {
+                    if (current - start >= 120000 && user == null) {
                         out.writeUTF("Auth timeout");
                         socket.close();
                         break;
                     }
-                } catch (IOException e) {
-                    System.out.println("ClientHandler Closed");
+                } catch (IOException ignored) {
                 }
             }
         }).start();
