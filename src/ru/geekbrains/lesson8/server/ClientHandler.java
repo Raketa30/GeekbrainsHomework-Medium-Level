@@ -19,7 +19,7 @@ public class ClientHandler implements Runnable {
     private final MessageTransmitter messageTransmitter;
     private final DataOutputStream out;
     private final DataInputStream in;
-    private User user;
+    private volatile User user;
 
     public ClientHandler(Socket socket, MessageTransmitter messageTransmitter) {
         this.socket = socket;
@@ -50,11 +50,11 @@ public class ClientHandler implements Runnable {
         return out;
     }
 
-    public User getUser() {
+    public synchronized User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public synchronized void setUser(User user) {
         this.user = user;
     }
 
@@ -76,7 +76,7 @@ public class ClientHandler implements Runnable {
             while (true) {
                 try {
                     long current = System.currentTimeMillis();
-                    if (current - start >= 120000 && user == null) {
+                    if (current - start >= 120000 && getUser() == null) {
                         out.writeUTF("Auth timeout");
                         socket.close();
                         break;
