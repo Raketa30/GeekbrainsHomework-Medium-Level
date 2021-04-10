@@ -1,7 +1,7 @@
-package ru.geekbrains.lesson7.server;
+package ru.geekbrains.lesson8.server;
 
-import ru.geekbrains.lesson7.server.entity.User;
-import ru.geekbrains.lesson7.server.exceptions.ChatServerException;
+import ru.geekbrains.lesson8.server.entity.User;
+import ru.geekbrains.lesson8.server.exceptions.ChatServerException;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,22 +15,24 @@ import java.net.Socket;
  */
 
 public class ClientHandler implements Runnable {
+    private Socket socket;
     private final MessageTransmitter messageTransmitter;
     private final DataOutputStream out;
     private final DataInputStream in;
-    private User user;
-
+    private volatile User user;
 
     public ClientHandler(Socket socket, MessageTransmitter messageTransmitter) {
+        this.socket = socket;
         this.messageTransmitter = messageTransmitter;
 
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-
+            getAuthTimer();
             authentication();
+
         } catch (IOException e) {
-            throw new ChatServerException("Something went wrong with ClientHandler");
+            throw new ChatServerException("ClientHandler closed");
         }
     }
 
@@ -48,11 +50,11 @@ public class ClientHandler implements Runnable {
         return out;
     }
 
-    public User getUser() {
+    public synchronized User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public synchronized void setUser(User user) {
         this.user = user;
     }
 
@@ -64,5 +66,25 @@ public class ClientHandler implements Runnable {
             isLoggedIn = messageTransmitter.getAuthService()
                     .authentication(this, authMessage);
         }
+        out.writeUTF("logged");
     }
+
+    private void getAuthTimer() {
+        long start = System.currentTimeMillis();
+
+        new Thread(() -> {
+            while (true) {
+                try {
+                    long current = System.currentTimeMillis();
+                    if (current - start >= 120000 && getUser() == null) {
+                        out.writeUTF("Auth timeout");
+                        socket.close();
+                        break;
+                    }
+                } catch (IOException ignored) {
+                }
+            }
+        }).start();
+    }
+
 }

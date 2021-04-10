@@ -1,6 +1,6 @@
-package ru.geekbrains.lesson7.server;
+package ru.geekbrains.lesson8.server;
 
-import ru.geekbrains.lesson7.server.service.AuthService;
+import ru.geekbrains.lesson8.server.service.AuthService;
 
 public class ServerRouter implements Router {
     private AuthService authService;

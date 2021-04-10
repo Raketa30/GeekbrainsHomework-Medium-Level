@@ -1,6 +1,6 @@
-package ru.geekbrains.lesson7.server;
+package ru.geekbrains.lesson8.server;
 
-import ru.geekbrains.lesson7.server.exceptions.ChatServerException;
+import ru.geekbrains.lesson8.server.exceptions.ChatServerException;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ public class ServerSender implements Sender {
         if (clientHandler.getUser() != null) {
             try {
                 clientHandler.getOut()
-                        .writeUTF(String.format("%s:> %s", nickname, message));
+                        .writeUTF(String.format("[%s]:> %s", nickname, message));
 
             } catch (IOException e) {
                 throw new ChatServerException("Something went wrong during sending the message.", e);

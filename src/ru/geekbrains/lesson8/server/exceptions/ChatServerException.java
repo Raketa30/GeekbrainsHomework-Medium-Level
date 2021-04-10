@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson7.server.exceptions;
+package ru.geekbrains.lesson8.server.exceptions;
 
 public class ChatServerException extends RuntimeException {
 

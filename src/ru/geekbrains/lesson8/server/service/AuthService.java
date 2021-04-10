@@ -1,8 +1,8 @@
-package ru.geekbrains.lesson7.server.service;
+package ru.geekbrains.lesson8.server.service;
 
-import ru.geekbrains.lesson7.server.ClientHandler;
-import ru.geekbrains.lesson7.server.MessageTransmitter;
-import ru.geekbrains.lesson7.server.entity.User;
+import ru.geekbrains.lesson8.server.ClientHandler;
+import ru.geekbrains.lesson8.server.MessageTransmitter;
+import ru.geekbrains.lesson8.server.entity.User;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -12,7 +12,7 @@ public class AuthService {
     private final ChatUsersDatabase chatUsersDatabase = new ChatUsersDatabase();
     private final Set<ClientHandler> loggedUser = new HashSet<>();
 
-    public Optional<User> findByLoginAndPassword(String login, String password) {
+    public synchronized Optional<User> findByLoginAndPassword(String login, String password) {
         return chatUsersDatabase.getUserSet()
                 .stream()
                 .filter(user -> user.getLogin().equals(login)
@@ -29,11 +29,11 @@ public class AuthService {
         loggedUser.remove(handler);
     }
 
-    public boolean isLoggedIn(User user) {
+    public synchronized boolean isLoggedIn(User user) {
         return loggedUser.stream().anyMatch(client -> client.getUser().equals(user));
     }
 
-    public boolean checkLoggedUserByNickname(String nickname) {
+    public synchronized boolean checkLoggedUserByNickname(String nickname) {
         return loggedUser.stream()
                 .anyMatch(client -> client.getUser().getNickname().equals(nickname));
     }

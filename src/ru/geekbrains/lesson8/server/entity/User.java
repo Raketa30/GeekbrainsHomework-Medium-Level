@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson7.server.entity;
+package ru.geekbrains.lesson8.server.entity;
 
 import java.util.Objects;
 
